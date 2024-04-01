@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Registration</title> 
+    <link rel="stylesheet" href="{% static "users/login-registration.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrapper">
+        <div class="title"><span>Registration</span></div>
+        <form>
+        <div class="row">
+            <i class="fas fa-user"></i>
+            <input name="username" id="id_username" type="text" placeholder="Username" required>
+            {% if form.username.errors %}<div class="alert alert-danger alert-dismissible fade show">{{ form.username.errors }}</div>{% endif %}
+            </div>
+
+          <div class="row">
+            <i class="fas fa-user"></i>
+            <input name="email" id="id_email" type="text" placeholder="Email" required>
+            {% if form.email.errors %}<div class="alert alert-danger alert-dismissible fade show">{{ form.email.errors }}</div>{% endif %}
+          </div>
+
+          <div class="row">
+            <i class="fas fa-lock"></i>
+            <input name="password1" id="id_password1" type="password" placeholder="Password" required>
+            {% if form.password1.errors %}<div class="alert alert-danger alert-dismissible fade show">{{ form.password1.errors }}</div>{% endif %}
+          </div>
+
+          <div class="row">
+            <i class="fas fa-lock"></i>
+            <input name="password2" id="id_password2" type="password" placeholder="Confirm password" required>
+            {% if form.password2.errors %}<div class="alert alert-danger alert-dismissible fade show">{{ form.password2.errors }}</div>{% endif %}
+          </div>
+
+          <div class="row button">
+            <input type="submit" value="Sign up">
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </body>
+</html>

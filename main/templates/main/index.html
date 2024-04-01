@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Главная страница</title>
+  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style='margin: 10px;' href="#">Главная</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto" style='margin: 10px;'>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Авторизоваться</a>
+        </li>
+        {% comment %} {% if request.user.is_authenticated %} {% endcomment %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">Профиль</a>
+        </li>
+        {% comment %} {% endif %} {% endcomment %}
+
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-10">
+        <h1>Добро пожаловать на главную страницу!</h1>
+        <p>Здесь может быть ваш контент...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static "bootstrap.bundle.min.js" %}"></script>
+</body>
+</html>
