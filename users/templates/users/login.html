@@ -6,24 +6,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Login</title> 
+     <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "users/login-registration.css" %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
   </head>
   <body>
+    {% include "includes/notifications.html" %}
     <div class="container">
       <div class="wrapper">
         <div class="title"><span>Login</span></div>
-        <form>
+        <form method="POST" action="{% url "users:login" %}">
+          {% csrf_token %}
+        
             <div class="row">
                 <i class="fas fa-user"></i>
                 <input name="username" id="id_username" type="text" placeholder="Username" required>
-                {% if form.username.errors %}<div class="alert alert-danger alert-dismissible fade show">{{ form.username.errors }}</div>{% endif %}
+
             </div>
 
             <div class="row">
                 <i class="fas fa-lock"></i>
                 <input name="password" id="id_password" type="password" placeholder="Password" required>
-                {% if form.password.errors %}<div class="alert alert-danger alert-dismissible fade show">{{ form.password.errors }}</div>{% endif %}
+
             </div>
 
             <div class="pass"><a href="#">Forgot password?</a></div>
@@ -35,5 +39,8 @@
         </form>
       </div>
     </div>
+    <script src="{% static "jquery-3.7.0.min.js" %}"></script>
+    <script src="{% static "script.js" %}"></script>
+    <script src="{% static "bootstrap.bundle.min.js" %}"></script>
   </body>
 </html>
