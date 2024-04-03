@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from posts.models import Post
 
 from users.models import User
 from users.forms import UserRegistrationForm, UserLoginForm
@@ -46,5 +47,9 @@ def logout(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
 def profile(request):
-    return render(request, "users/profile.html")
+    user = request.user
+    posts = Post.objects.filter(user=user).all()
+    context = {"user": user, "posts":posts}
+    return render(request, "users/profile.html", context=context)
