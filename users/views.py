@@ -44,3 +44,7 @@ def registration(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def profile(request):
+    return render(request, "users/profile.html")
