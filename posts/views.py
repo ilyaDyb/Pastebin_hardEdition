@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.cache import cache
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -25,6 +26,11 @@ def create(request):
     
 
 def post_detail(request, hash_id):
-    post = Post.objects.get(postmeta__hash_id=hash_id)
+    post = cache.get(key=hash_id)
+    if post is None:
+        post = Post.objects.get(postmeta__hash_id=hash_id)
+        post.increment_views()
+    else:
+        post.increment_views()
     context = {"post": post}
     return render(request, "posts/post.html", context=context)

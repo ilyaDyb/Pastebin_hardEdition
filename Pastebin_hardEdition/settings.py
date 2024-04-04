@@ -96,6 +96,18 @@ DATABASES = {
     }
 }
 
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:16379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -139,6 +151,11 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "users.User"
+
+
+CELERY_BROKER_URL = 'redis://localhost:16379/1'
+CELERY_RESULT_BACKEND = 'redis://localhost:16379/1'
+
 
 # LOGGING = {
 #     'version': 1,
