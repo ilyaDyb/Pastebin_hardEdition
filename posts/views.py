@@ -14,7 +14,6 @@ def create(request):
         title = request.POST["title"]
         content = request.POST["content"]
         when_del = request.POST["expiry_date"]
-        print(when_del)
         Post.objects.create(title=title, user=request.user, text=content, when_del=when_del)
         messages.success(request, "You successfully created a post")
         return redirect(reverse("main:index"))
@@ -28,9 +27,15 @@ def create(request):
 def post_detail(request, hash_id):
     post = cache.get(key=hash_id)
     if post is None:
-        post = Post.objects.get(postmeta__hash_id=hash_id)
-        post.increment_views()
+        try:
+            post = Post.objects.select_related('postmeta').get(postmeta__hash_id=hash_id)
+            post.increment_views()
+            cache.set(key=hash_id, value=post)
+            context = {"post": post}
+        except Post.DoesNotExist:
+            context = {"error_message": "Post not found"}
     else:
         post.increment_views()
-    context = {"post": post}
+        cache.set(key=hash_id, value=post)
+        context = {"post": post, "views": post.views}
     return render(request, "posts/post.html", context=context)

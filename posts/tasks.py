@@ -1,10 +1,10 @@
-from Pastebin_hardEdition.celery import app
+from celery import shared_task
 from django.core.cache import cache
 
 from posts.models import Post
 
 
-@app.task
+@shared_task
 def cache_popular_posts():
     try:
         popular_posts = Post.objects.filter(views__gt=10)

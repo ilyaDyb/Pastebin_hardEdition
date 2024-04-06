@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 from django.db import models
 from users.models import User
 
@@ -9,7 +9,7 @@ class Post(models.Model):
     title = models.CharField(max_length=100, default=None)
     text = models.TextField()
     views = models.IntegerField(default=0)
-    created_at = models.DateTimeField(default=datetime.datetime.now())
+    created_at = models.DateTimeField(default=timezone.now)
     when_del = models.DateTimeField()
     class Meta:
         db_table = 'Posts'
