@@ -1,8 +1,9 @@
+from datetime import datetime
 from celery import shared_task
 from django.core.cache import cache
+from django.utils import timezone
 
 from posts.models import Post
-
 
 @shared_task
 def cache_popular_posts():
@@ -13,7 +14,12 @@ def cache_popular_posts():
             cache.add(key=hash, value=post)
     except Exception as ex:
         return ex
-    
-# @app.task в планах
-# def async_updateDataForCacheAndDb():
-#     ...
+
+@shared_task
+def delete_old_posts():
+    current_date = timezone.now()
+    try:
+        Post.objects.filter(when_del__lt=current_date).delete()
+        return "Success"
+    except Exception as ex:
+        return str(ex)

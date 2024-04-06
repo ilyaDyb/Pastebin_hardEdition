@@ -1,5 +1,6 @@
 import os
 from celery import Celery
+from celery.schedules import crontab
 from django.conf import settings
 
 
@@ -22,13 +23,15 @@ app.conf.beat_schedule = {
         'schedule': 30.0,
         'name': 'posts.tasks.cache_popular_posts',
     },
+    'delete_old_posts_every_3hour': {
+        'task': 'posts.tasks.delete_old_posts',
+        'schedule': crontab(hour="*/3"),
+        'name': 'posts.tasks.cdelete_old_posts',
+    },
 }
+
+
+
 app.conf.timezone = 'UTC'
 
 
-# app.conf.beat_schedule = {    В планах
-#     'async_update-Data-For-Cache-And-Db': {
-#         'task': 'tasks.async_updateDataForCacheAndDb',
-#         'schedule': 60.0,
-#     },
-# }

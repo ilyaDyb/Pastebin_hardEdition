@@ -14,7 +14,6 @@ class Post(models.Model):
     class Meta:
         db_table = 'Posts'
     
-    using = 'second_db'
 
     def __str__(self) -> str:
         return self.title

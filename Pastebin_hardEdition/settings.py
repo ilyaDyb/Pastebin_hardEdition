@@ -86,7 +86,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     },
-    'second_db': {
+    'second_db': { #recommend to use Blobstorages for 
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Pastebin_meta',
         'USER': 'postgres',
