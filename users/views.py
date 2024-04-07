@@ -44,7 +44,7 @@ def registration(request):
 @login_required
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return redirect(reverse("main:index"))
 
 
 @login_required

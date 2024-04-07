@@ -8,6 +8,8 @@ from posts.models import Post
 
 from datetime import datetime, timedelta
 
+from posts.utils import util_for_sessions
+
 @login_required
 def create(request):
     if request.method == "POST":
@@ -26,16 +28,17 @@ def create(request):
 
 def post_detail(request, hash_id):
     post = cache.get(key=hash_id)
+    session_key = request.session.session_key
     if post is None:
         try:
             post = Post.objects.select_related('postmeta').get(postmeta__hash_id=hash_id)
-            post.increment_views()
-            cache.set(key=hash_id, value=post)
-            context = {"post": post}
+            util_for_sessions(session_key, request, post)
+
         except Post.DoesNotExist:
             context = {"error_message": "Post not found"}
     else:
-        post.increment_views()
+        util_for_sessions(session_key, request, post)
         cache.set(key=hash_id, value=post)
-        context = {"post": post, "views": post.views}
+
+    context = {"post": post}
     return render(request, "posts/post.html", context=context)
