@@ -1,5 +1,5 @@
 from django.contrib import auth, messages
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -48,8 +48,19 @@ def logout(request):
 
 
 @login_required
-def profile(request):
-    user = request.user
+def profile(request, user_id):
+    user = User.objects.get(pk=user_id)
     posts = Post.objects.filter(user=user).all()
     context = {"user": user, "posts":posts}
     return render(request, "users/profile.html", context=context)
+
+
+def subscribe(request):
+    if request.method == "POST":
+        user_who_subscribe = request.user
+        user_to_subscribe = User.objects.get(pk=request.POST["user_id_to_subscribe"])
+        user_to_subscribe.subscribers.add(user_who_subscribe)
+        messages.success(request, "You subscribed to this user")
+        return JsonResponse({"status": "success"})
+    else:
+        return HttpResponse(status=404)

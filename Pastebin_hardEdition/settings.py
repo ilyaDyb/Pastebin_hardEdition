@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'Pastebin_hardEdition.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Pastebin',
+        'NAME': 'Pastebin_meta',
         'USER': 'postgres',
         'PASSWORD': 'wicki',
         'HOST': 'localhost',
@@ -88,7 +88,7 @@ DATABASES = {
     },
     'second_db': { #recommend to use Blobstorages for 
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Pastebin_meta',
+        'NAME': 'Pastebin',
         'USER': 'postgres',
         'PASSWORD': 'wicki',
         'HOST': 'localhost',
@@ -156,7 +156,7 @@ AUTH_USER_MODEL = "users.User"
 CELERY_BROKER_URL = 'redis://localhost:16379/1'
 CELERY_RESULT_BACKEND = 'redis://localhost:16379/1'
 
-
+LOGIN_URL = "/users/login"
 # LOGGING = {
 #     'version': 1,
 #     'handlers': {

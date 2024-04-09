@@ -47,12 +47,20 @@
           <h2 class="profile-info">{{ user.username }}</h2>
           <p class="profile-info">Email: {{ user.email }}</p>
           <p class="profile-info">Joined: {{ user.date_joined }}</p>
+          <p id="subscribes" class="profile-info">Subscribes: {{ user.subscribers.count }}</p>
+          {% if user.id == request.user.id %}
           <a class="btn btn-secondary" href="{% url "posts:create" %}">Create post</a>
+          {% endif %}
+          {% if request.user not in user.subscribers.all and user.id != request.user.id %}
+          <a class="btn btn-group-lg" id="subscribe_btn" style="background-color:red; color: white;" href="{% url "users:subscribe" %}"
+          data-user-id-to-subscribe="{{ user.id }}">Subscribe</a>
+          {% endif %}
+          {% csrf_token %}
         </div>
       </div>
       <div class="col-md-6">
         <div class="user-posts" style="margin-top: 60px;">
-          <h3>My Posts:</h3>
+          <h3>Posts:</h3>
           {% for post in posts %}
           <div class="post">
             <h4>{{ post.title }}</h4>
@@ -67,5 +75,36 @@
       </div>
     </div>
   </div>
+  <script src="{% static "jquery-3.7.0.min.js" %}"></script>
+  <script>
+    $(document).ready(function () {
+      $(document).on("click", "#subscribe_btn", function (e) {
+          e.preventDefault();
+  
+          var userIdToSubscribe = $(this).data("userIdToSubscribe");
+          var subscribe_url = $(this).attr("href");
+          var csrf_token = $("[name=csrfmiddlewaretoken]").val();
+          var subscribesText = $("#subscribes").text();
+          var subscribesNumber = parseInt(subscribesText.split(":")[1].trim());
+  
+          $.ajax({
+              type: "POST",
+              url: subscribe_url,
+              data: {
+                  user_id_to_subscribe: userIdToSubscribe,
+                  csrfmiddlewaretoken: csrf_token,
+              }
+          })
+          .then(function (data) {
+              subscribesNumber++;
+              $("#subscribes").text("Subscribes: " + subscribesNumber);
+              $("#subscribe_btn").remove();
+          })
+          .catch(function (error) {
+              console.log("Error");
+          });
+      });
+  });
+</script>
 </body>
 </html>
