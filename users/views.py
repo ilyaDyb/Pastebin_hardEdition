@@ -50,7 +50,7 @@ def logout(request):
 @login_required
 def profile(request, user_id):
     user = User.objects.get(pk=user_id)
-    posts = Post.objects.filter(user=user).all()
+    posts = Post.objects.filter(user=user).order_by("-created_at")
     context = {"user": user, "posts":posts}
     return render(request, "users/profile.html", context=context)
 

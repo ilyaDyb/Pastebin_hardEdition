@@ -1,3 +1,4 @@
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" style='margin: 10px;' href="/">Главная</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -8,13 +9,29 @@
         </li>
         {% else %}
         <li class="nav-item">
+          <button id="notif_btn"><img src="{% static "images/notification.png" %}" width=32 height=32 alt=""></button>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{% url "users:profile" request.user.id %}">Профиль</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url "users:logout" %}">Выйти</a>
         </li>
         {% endif %}
-        
       </ul>
     </div>
   </nav>
+  <div id="hiddenContent" style="display: none; margin-left:85%; background-color: grey;">
+    <ul>
+      {% for notification in request.user.notifications.all %}
+        <li>Пользователь: <b>{{ notification.post.user.username }} </b> выложил новый <a href="{% url "posts:post_detail" notification.post.postmeta.hash_id%}">пост</a>!</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <script>
+    $(document).ready(function(e) {
+      $("#notif_btn").click(function() {
+        $("#hiddenContent").slideToggle();
+      });
+    });
+  </script>

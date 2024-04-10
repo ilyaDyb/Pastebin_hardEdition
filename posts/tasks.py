@@ -3,6 +3,7 @@ from celery import shared_task
 from django.core.cache import cache
 from django.utils import timezone
 
+from notifications.models import Notifications
 from posts.models import Post
 
 @shared_task
@@ -23,3 +24,11 @@ def delete_old_posts():
         return "Success"
     except Exception as ex:
         return str(ex)
+    
+
+@shared_task
+def create_notifications(post_id):
+    post = Post.objects.get(pk=post_id)
+    subscribers = post.user.subscribers.all()
+    for subscriber in subscribers:
+        notifications = Notifications.objects.create(post=post, user=subscriber)
