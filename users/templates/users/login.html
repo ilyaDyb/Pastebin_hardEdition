@@ -1,47 +1,39 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<!-- Created By CodingLab - www.codinglabweb.com -->
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Login</title> 
-     <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
-    <link rel="stylesheet" href="{% static "users/login-registration.css" %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
-  </head>
-  <body>
-    {% include "includes/nav_bar.html" %}
-    {% include "includes/notifications.html" %}
-    <div class="container">
-      <div class="wrapper">
-        <div class="title"><span>Login</span></div>
-        <form method="POST" action="{% url "users:login" %}">
-          {% csrf_token %}
-        
-            <div class="row">
-                <i class="fas fa-user"></i>
-                <input name="username" id="id_username" type="text" placeholder="Username" required>
+{% block style %}
+<link rel="stylesheet" href="{% static "users/login-registration.css" %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+{% endblock  %}
 
-            </div>
+{% block content %}
+<div class="container">
+  <div class="wrapper">
+    <div class="title"><span>Login</span></div>
+    <form method="POST" action="{% url "users:login" %}">
+      {% csrf_token %}
+    
+        <div class="row">
+            <i class="fas fa-user"></i>
+            <input name="username" id="id_username" type="text" placeholder="Username" required>
 
-            <div class="row">
-                <i class="fas fa-lock"></i>
-                <input name="password" id="id_password" type="password" placeholder="Password" required>
+        </div>
 
-            </div>
+        <div class="row">
+            <i class="fas fa-lock"></i>
+            <input name="password" id="id_password" type="password" placeholder="Password" required>
 
-            <div class="pass"><a href="#">Forgot password?</a></div>
-            <div class="row button">
-                <input type="submit" value="Login">
-            </div>
+        </div>
 
-          <div class="signup-link">Haven't acc? <a href="{% url "users:registration" %}">Signup now</a></div>
-        </form>
-      </div>
-    </div>
-    <script src="{% static "jquery-3.7.0.min.js" %}"></script>
-    <script src="{% static "script.js" %}"></script>
-    <script src="{% static "bootstrap.bundle.min.js" %}"></script>
-  </body>
-</html>
+        <div class="pass"><a href="#">Forgot password?</a></div>
+        <div class="row button">
+            <input type="submit" value="Login">
+        </div>
+
+      <div class="signup-link">Haven't acc? <a href="{% url "users:registration" %}">Signup now</a></div>
+    </form>
+  </div>
+</div>
+{% endblock  %}
+{% block scripts %}
+<script src="{% static "jquery-3.7.0.min.js" %}"></script>
+{% endblock  %}

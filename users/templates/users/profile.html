@@ -1,126 +1,120 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile</title>
-  <!-- Bootstrap CSS -->
-  <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
-  <!-- Custom styles -->
-  <style>
-    /* Add your custom styles here */
-    .profile-card {
-      margin-top: 100px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .profile-avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      margin-bottom: 20px;
-    }
-    .profile-info {
-      font-size: 18px;
-    }
-    .user-posts {
-      margin-top: 30px;
-    }
-    .post {
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
-  {% include "includes/nav_bar.html" %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="profile-card">
-          <img src="{% static "users/user_avatar.png" %}" alt="Profile Picture" class="profile-avatar">
-          <h2 class="profile-info">{{ user.username }}</h2>
-          <p class="profile-info">Email: {{ user.email }}</p>
-          <p class="profile-info">Joined: {{ user.date_joined }}</p>
-          <p id="subscribes" class="profile-info">Subscribes: {{ user.subscribers.count }}</p>
-          {% if user.id == request.user.id %}
-            <a class="btn btn-secondary" href="{% url "posts:create" %}">Create post</a>
-          {% endif %}
-          {% if request.user not in user.subscribers.all and user.id != request.user.id %}
-            <a class="btn btn-group-lg" id="subscribe_btn" style="background-color:red; color: white;" href="{% url "users:subscribe" %}"
-            data-user-id-to-subscribe="{{ user.id }}">Subscribe</a>
-          {% endif %}
-          {% if user.id == request.user.id %}
-            <button id="subscriptions" class="btn btn-outline-primary">My subscriptions</button>
-            <div id="hiddenContent" style="display: none;">
-              <ul>
-                {% for subscription in user.subscribed_to.all %}
-                  <li><a href="{% url "users:profile" subscription.id %}">{{ subscription.username }}</a></li>
-                {% endfor %}
-              </ul>
-            </div>
-          {% endif %}
-          {% csrf_token %}
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="user-posts" style="margin-top: 60px;">
-          <h3>Posts:</h3>
-          {% for post in posts %}
-          <div class="post">
-            <h4>{{ post.title }}</h4>
-            <p>Created at: {{ post.created_at }} <span style="text-decoration:underline">views: {{ post.views }}</p>
-            <p style="color:blue;">Hash for your post:
-              <a href="http://127.0.0.1:8000/posts/{{ post.postmeta.hash_id }}"><b>{{ post.postmeta.hash_id }}</b></a></p>
+{% block style %}
+<style>
+  /* Add your custom styles here */
+  .profile-card {
+    margin-top: 100px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+  .profile-info {
+    font-size: 18px;
+  }
+  .user-posts {
+    margin-top: 30px;
+  }
+  .post {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+  }
+</style>
+{% endblock  %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="profile-card">
+        <img src="{% static "users/user_avatar.png" %}" alt="Profile Picture" class="profile-avatar">
+        <h2 class="profile-info">{{ user.username }}</h2>
+        <p class="profile-info">Email: {{ user.email }}</p>
+        <p class="profile-info">Joined: {{ user.date_joined }}</p>
+        <p id="subscribes" class="profile-info">Subscribes: {{ user.subscribers.count }}</p>
+        {% if user.id == request.user.id %}
+          <a class="btn btn-secondary" href="{% url "posts:create" %}">Create post</a>
+        {% endif %}
+        {% if request.user not in user.subscribers.all and user.id != request.user.id %}
+          <a class="btn btn-group-lg" id="subscribe_btn" style="background-color:red; color: white;" href="{% url "users:subscribe" %}"
+          data-user-id-to-subscribe="{{ user.id }}">Subscribe</a>
+        {% endif %}
+        {% if user.id == request.user.id %}
+          <button id="subscriptions" class="btn btn-outline-primary">My subscriptions</button>
+          <div id="hiddenContent" style="display: none;">
+            <ul>
+              {% for subscription in user.subscribed_to.all %}
+                <li><a href="{% url "users:profile" subscription.id %}">{{ subscription.username }}</a></li>
+              {% endfor %}
+            </ul>
           </div>
-          {% empty %}
-          <p>No posts yet.</p>
-          {% endfor %}
+        {% endif %}
+        {% csrf_token %}
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="user-posts" style="margin-top: 60px;">
+        <h3>Posts:</h3>
+        {% for post in posts %}
+        <div class="post">
+          <h4>{{ post.title }}</h4>
+          <p>Created at: {{ post.created_at }} <span style="text-decoration:underline">views: {{ post.views }}</p>
+          <p style="color:blue;">Hash for your post:
+            <a href="http://127.0.0.1:8000/posts/{{ post.postmeta.hash_id }}"><b>{{ post.postmeta.hash_id }}</b></a></p>
         </div>
+        {% empty %}
+        <p>No posts yet.</p>
+        {% endfor %}
       </div>
     </div>
   </div>
-  <script src="{% static "jquery-3.7.0.min.js" %}"></script>
-  <script>
-    $(document).ready(function () {
-      $(document).on("click", "#subscribe_btn", function (e) {
-          e.preventDefault();
-  
-          var userIdToSubscribe = $(this).data("userIdToSubscribe");
-          var subscribe_url = $(this).attr("href");
-          var csrf_token = $("[name=csrfmiddlewaretoken]").val();
-          var subscribesText = $("#subscribes").text();
-          var subscribesNumber = parseInt(subscribesText.split(":")[1].trim());
-  
-          $.ajax({
-              type: "POST",
-              url: subscribe_url,
-              data: {
-                  user_id_to_subscribe: userIdToSubscribe,
-                  csrfmiddlewaretoken: csrf_token,
-              }
-          })
-          .then(function (data) {
-              subscribesNumber++;
-              $("#subscribes").text("Subscribes: " + subscribesNumber);
-              $("#subscribe_btn").remove();
-          })
-          .catch(function (error) {
-              console.log("Error");
-          });
-      });
-  });
-  $(document).ready(function(e) {
-    $("#subscriptions").click(function() {
-      $("#hiddenContent").slideToggle();
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static "jquery-3.7.0.min.js" %}"></script>
+<script>
+  $(document).ready(function () {
+    $(document).on("click", "#subscribe_btn", function (e) {
+        e.preventDefault();
+
+        var userIdToSubscribe = $(this).data("userIdToSubscribe");
+        var subscribe_url = $(this).attr("href");
+        var csrf_token = $("[name=csrfmiddlewaretoken]").val();
+        var subscribesText = $("#subscribes").text();
+        var subscribesNumber = parseInt(subscribesText.split(":")[1].trim());
+
+        $.ajax({
+            type: "POST",
+            url: subscribe_url,
+            data: {
+                user_id_to_subscribe: userIdToSubscribe,
+                csrfmiddlewaretoken: csrf_token,
+            }
+        })
+        .then(function (data) {
+            subscribesNumber++;
+            $("#subscribes").text("Subscribes: " + subscribesNumber);
+            $("#subscribe_btn").remove();
+        })
+        .catch(function (error) {
+            console.log("Error");
+        });
     });
+});
+$(document).ready(function(e) {
+  $("#subscriptions").click(function() {
+    $("#hiddenContent").slideToggle();
   });
-  
+});
+
 </script>
-</body>
-</html>
+{% endblock  %}

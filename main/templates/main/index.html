@@ -1,28 +1,13 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Главная страница</title>
-  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
-  <script src="{% static "jquery-3.7.0.min.js" %}"></script>
-</head>
-<body>
-  {% include "includes/nav_bar.html" %}
-  {% include "includes/notifications.html" %}
+{% extends "base.html" %}
 
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-10">
-        <h1>Добро пожаловать на главную страницу!</h1>
-        <p>На этом сайте вы можете создавать посты и читать чужие!</p>
-        <p>А также подписаваться на пользователей и получать уведомления от пользователей, на которых вы подписаны!</p>
-      </div>
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-10">
+      <h1>Добро пожаловать на главную страницу!</h1>
+      <p>На этом сайте вы можете создавать посты и читать чужие!</p>
+      <p>А также подписаваться на пользователей и получать уведомления от пользователей, на которых вы подписаны!</p>
     </div>
   </div>
-  <script src="{% static "script.js" %}"></script>
-  <script src="{% static "bootstrap.bundle.min.js" %}"></script>
-
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,59 +1,47 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post Detail</title>
-  <!-- Bootstrap CSS -->
-  <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
-  <!-- Custom styles -->
-  <style>
-    /* Add your custom styles here */
-    .post-container {
-      margin-bottom: 50px;
-    }
-    .post-title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
-    .post-content {
-      margin-top: 10px;
-      color: #666;
-    }
-    .post-text {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 10px;
-      margin-top: 10px;
-    }
-    .post-footer {
-      margin-top: 20px;
-      color: #999;
-    }
-  </style>
-</head>
-<body>
-  {% include "includes/nav_bar.html" %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="post-container">
-          <h2 class="post-title">{{ post.title }}</h2>
-          <div class="post-text">
-            <p>{{ post.text }}</p>
-          </div>
-          <div class="post-footer">
-            <p>Author: {{ post.user.username }}</p>
-            <p>Created at: {{ post.created_at|date:"H:i d.m.Y" }}</p>
+{% extends "base.html" %}
+{% block style %}
+<style>
+  /* Add your custom styles here */
+  .post-container {
+    margin-bottom: 50px;
+  }
+  .post-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  .post-content {
+    margin-top: 10px;
+    color: #666;
+  }
+  .post-footer {
+    margin-top: 20px;
+    color: #999;
+  }
+</style>
+{% endblock  %}
 
-            <p>Views: {{ post.views }}</p>
-            
-          </div>
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="post-container">
+        <h2 class="post-title">{{ post.title }}</h2>
+        <div class="post-text" style="border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 10px;">
+          <p>{{ post.text }}</p>
+        </div>
+        <div class="post-footer">
+          <p>Author: {{ post.user.username }}</p>
+          <p>Created at: {{ post.created_at|date:"H:i d.m.Y" }}</p>
+
+          <p>Views: {{ post.views }}</p>
+          
         </div>
       </div>
     </div>
   </div>
-</body>
-</html>
+</div>
+{% endblock  %}

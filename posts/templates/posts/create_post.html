@@ -1,58 +1,48 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Post</title>
-  <!-- Bootstrap CSS -->
-  <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
-  <!-- Custom styles -->
-  <style>
-    /* Add your custom styles here */
-    .post-form {
-      margin-top: 100px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      font-weight: bold;
-    }
-    .btn-submit {
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  {% include "includes/nav_bar.html" %}
-  {% include "includes/notifications.html" %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="post-form">
-          <h2>Create Post</h2>
-          <form action="{% url "posts:create" %}" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-              <label for="title">Title:</label>
-              <input type="text" class="form-control" id="title" name="title" required>
-            </div>
-            <div class="form-group">
-              <label for="content">Content:</label>
-              <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="expiry_date">Expiry Date:</label>
-                <input type="date" class="form-control" id="expiry_date" name="expiry_date" value="{{ default_expiry_date }}">
-            </div>
-            <button type="submit" class="btn btn-primary btn-submit">Submit</button>
-            </div>
-          </form>
-        </div>
+{% extends "base.html" %}
+{% block style %}
+<style>
+  /* Add your custom styles here */
+  .post-form {
+    margin-top: 100px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    font-weight: bold;
+  }
+  .btn-submit {
+    margin-top: 20px;
+  }
+</style>
+{% endblock  %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="post-form">
+        <h2>Create Post</h2>
+        <form action="{% url "posts:create" %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+          </div>
+          <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+          </div>
+          <div class="form-group">
+              <label for="expiry_date">Expiry Date:</label>
+              <input type="date" class="form-control" id="expiry_date" name="expiry_date" value="{{ default_expiry_date }}">
+          </div>
+          <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-</body>
-</html>
+</div>
+{% endblock  %}
