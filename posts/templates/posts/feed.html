@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load posts_tags %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+      <div class="col-md-8">
+          <h2>Посты</h2>
+          {% if posts %}
+          <div class="card mb-3">
+              {% for post in posts %}
+              <div class="card-body">
+                  {% autoescape off %}
+                  {% if post.headline %}
+                  {{ post.headline }}
+                  {% else %}
+                    <h5 class="card-title">
+                    {{ post.title }}
+                    </h5>
+                    {% endif %}
+                    {% endautoescape %}
+
+                  <p class="card-text">{{ post.text|truncatewords:35 }}</p>
+                  <p>Author: <a href="{% url 'users:profile' post.user.id %}">{{ post.user.username }}</a> | Created_at: {{ post.created_at|date:"d M Y H:i" }} |
+                     views: <b>{{ post.views }}</b></p>
+                  <a href="{% url 'posts:post_detail' post.postmeta.hash_id %}" class="btn btn-primary">Подробнее</a>
+                  <hr>
+              </div>
+              {% endfor %}
+          </div>
+          {% else %}
+          <h1>Что-то пошло не так</h1>
+          {% endif %}
+      </div>
+      <div class="col-md-4">
+          <h2>Поиск постов</h2>
+          <form method="GET" action="{% url "posts:feed" %}" class="form-inline">
+              <div class="form-group flex-fill mr-2">
+                  <input type="text" name="q" class="form-control w-100" placeholder="Поиск">
+              </div>
+              <button type="submit" class="btn btn-primary">Искать</button>
+          </form>
+
+          <button class="btn btn-primary" id="btn_filter" style="margin-top:20px;">Фильтры</button>
+        <div class="col-md-3" id="hiddenFilters" style="margin-top:5px; display: none;">
+            <ul class="list-group">
+                <li style="width: auto;"class="list-group-item"><a href="?filter=popular">Popular</a></li>
+                <li class="list-group-item"><a href="?filter=new">New</a></li>
+                <li class="list-group-item"><a href="?filter=old">Old</a></li>
+            </ul>
+
+        </div>
+        
+      </div>
+  </div>
+</div>
+
+
+{% if posts %}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center my-4">
+      <div class="custom-shadow d-flex">
+          <li class="page-item {% if not posts.has_previous %}disabled{% endif %}">
+            <a class="page-link" href="{% if posts.has_previous %}?{% change_params page=posts.previous_page_number %}{% else %}#{% endif %}">Назад</a>
+          </li>
+
+          {% for page in posts.paginator.page_range %}
+          {% if page >= posts.number|add:-2 and page <= posts.number|add:2 %}
+              <li class="page-item">
+                  <a class="page-link{% if posts.number == page %} active {% endif %}" href="?{% change_params page=page %}">{{ page }}</a>
+              </li>
+          {% endif %}
+          {% endfor %}
+
+
+          <li class="page-item {% if not posts.has_next %}disabled{% endif %}">
+              <a class="page-link" href="{% if posts.has_next %}?{% change_params page=posts.next_page_number %}{% else %}#{% endif %}">Следующая</a>
+            </li>
+      </div>
+  </ul>
+</nav>
+{% endif %}
+</div>
+{% endblock content %}
+{% block scripts %}
+<script>
+    $(document).ready(function(e) {
+      $("#btn_filter").click(function() {
+        $("#hiddenFilters").slideToggle();
+      });
+    });
+  </script>
+{% endblock  %}

@@ -68,7 +68,7 @@
           <h4>{{ post.title }}</h4>
           <p>Created at: {{ post.created_at }} <span style="text-decoration:underline">views: {{ post.views }}</p>
           <p style="color:blue;">Hash for your post:
-            <a href="http://127.0.0.1:8000/posts/{{ post.postmeta.hash_id }}"><b>{{ post.postmeta.hash_id }}</b></a></p>
+            <a href="{% url "posts:post_detail" post.postmeta.hash_id %}"><b>{{ post.postmeta.hash_id }}</b></a></p>
         </div>
         {% empty %}
         <p>No posts yet.</p>

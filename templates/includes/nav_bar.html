@@ -1,16 +1,21 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" style='margin: 10px;' href="/">Главная</a>
+    <a class="navbar-brand mx-5" href="{% url "posts:feed" %}">Feed</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto" style='margin: 10px;'>
         {% if not request.user.is_authenticated %}
+
+
         <li class="nav-item">
           <a class="nav-link" href="{% url "users:login" %}">Авторизоваться</a>
-        </li>
+        </li> 
         {% else %}
-        <li class="nav-item">
-          <button id="notif_btn"><img src="{% static "images/notification.png" %}" width=32 height=32 alt=""></button>
-        </li>
+          {% if request.user.notifications.all %}
+          <li class="nav-item">
+            <button id="notif_btn"><img src="{% static "images/notification.png" %}" width=32 height=32 alt=""></button>
+          </li>
+          {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{% url "users:profile" request.user.id %}">Профиль</a>
         </li>

@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.core.cache import cache
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -9,7 +10,7 @@ from posts.models import Post
 
 from datetime import datetime, timedelta
 
-from posts.utils import util_for_sessions
+from posts.utils import q_search, util_for_sessions
 
 @login_required
 def create(request):
@@ -54,3 +55,24 @@ def post_detail(request, hash_id):
 
     context = {"post": post}
     return render(request, "posts/post.html", context=context)
+
+
+def feed(request):
+    page = request.GET.get("page", 1)
+    filter = request.GET.get("filter", None)
+    query = request.GET.get("q", None)
+    posts = Post.objects.all()
+
+    if filter == "popular":
+        posts = posts.order_by("-views")
+    elif filter == "new":
+        posts = posts.order_by("created_at")
+    elif filter == "old":
+        posts = posts.order_by("-created_at")
+    if query:
+        posts = q_search(query=query)
+
+    paginator = Paginator(posts, 5)
+    current_page = paginator.page(int(page))
+    context = {"posts": current_page}
+    return render(request, "posts/feed.html", context=context)
